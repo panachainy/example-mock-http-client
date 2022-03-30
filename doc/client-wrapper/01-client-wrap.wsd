@@ -1,0 +1,4 @@
+@startuml Normal
+Service -> ExternalAPI : Hello
+Service <-- ExternalAPI : return
+@enduml

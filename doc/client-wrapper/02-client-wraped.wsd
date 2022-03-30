@@ -1,0 +1,6 @@
+@startuml Normal
+Service -> ClientWrapper: Hello
+ClientWrapper -> ExternalAPI : Hello
+ClientWrapper <-- ExternalAPI : return
+Service <-- ClientWrapper: return
+@enduml

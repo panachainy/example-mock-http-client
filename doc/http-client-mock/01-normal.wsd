@@ -1,0 +1,4 @@
+@startuml Normal
+Client -> ExternalAPI : Hello
+Client <-- ExternalAPI
+@enduml

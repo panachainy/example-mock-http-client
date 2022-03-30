@@ -1,0 +1,6 @@
+@startuml Mock service external
+box "Internal Service" #LightBlue
+Client -> mockClient : Call Func mockClient
+Client <-- mockClient : return
+end box
+@enduml

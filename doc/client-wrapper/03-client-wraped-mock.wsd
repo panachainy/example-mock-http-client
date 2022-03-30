@@ -1,0 +1,4 @@
+@startuml Normal
+Service -> MockClientWrapper: Hello
+Service <-- MockClientWrapper: return
+@enduml

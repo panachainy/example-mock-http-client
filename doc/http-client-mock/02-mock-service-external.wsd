@@ -1,0 +1,4 @@
+@startuml Mock service external
+Client -> MockAPI : Hello
+Client <-- MockAPI
+@enduml
