@@ -2,8 +2,14 @@ package client
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/go-resty/resty/v2"
+)
+
+var (
+	clientOnce sync.Once
+	exampleC   *ExampleClientImp
 )
 
 // note: BASE_URL should be ENV
@@ -16,17 +22,17 @@ type ExampleClient interface {
 	GetName(idToken string) (*ExampleResponse, error)
 }
 
-type exampleClientImp struct {
+type ExampleClientImp struct {
 	Client *resty.Client
 }
 
-func NewExampleClient() ExampleClient {
-	return &exampleClientImp{
-		Client: func() *resty.Client {
-			client := resty.New()
-			return client
-		}(),
-	}
+func NewExampleClient() *ExampleClientImp {
+	clientOnce.Do(func() {
+		client := resty.New()
+		exampleC = &ExampleClientImp{Client: client}
+	})
+
+	return exampleC
 }
 
 type ExampleResponse struct {
@@ -37,7 +43,7 @@ type ExampleError struct {
 	Error string `json:"error"`
 }
 
-func (c *exampleClientImp) GetName(id string) (*ExampleResponse, error) {
+func (c *ExampleClientImp) GetName(id string) (*ExampleResponse, error) {
 	url := EXAMPLE_PATH
 
 	resp, err := c.Client.R().
