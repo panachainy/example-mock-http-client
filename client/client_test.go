@@ -112,7 +112,7 @@ func Test_exampleClientImp_GetName(t *testing.T) {
 			},
 			want:           nil,
 			wantErr:        true,
-			wantErrMessage: "Not success",
+			wantErrMessage: "Not success 400",
 		},
 	}
 	for _, tt := range tests {

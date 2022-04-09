@@ -59,7 +59,7 @@ func (c *ExampleClientImp) GetName(id string) (*ExampleResponse, error) {
 	}
 
 	if !resp.IsSuccess() {
-		return nil, fmt.Errorf("Not success")
+		return nil, fmt.Errorf("Not success %v", resp.StatusCode())
 	}
 
 	return resp.Result().(*ExampleResponse), nil
