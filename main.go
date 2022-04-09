@@ -1,7 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"example-mock-http-client/client"
+)
 
 func main() {
-	fmt.Println("test")
+	exampleClient := client.NewExampleClient()
+	resp, err := exampleClient.GetName("1")
+	if err != nil {
+		fmt.Println("Error ", err.Error())
+	}
+
+	fmt.Println("Resp ", resp)
 }
