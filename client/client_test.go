@@ -1,19 +1,21 @@
-package client
+package client_test
 
 import (
 	"log"
 	"reflect"
 	"testing"
 
+	"example-mock-http-client/client"
+
 	"github.com/go-resty/resty/v2"
 	"github.com/jarcoal/httpmock"
 	"github.com/stretchr/testify/assert"
 )
 
-var client = resty.New()
+var clientMock = resty.New()
 
 func setupTestSuite(tb testing.TB) func(tb testing.TB) {
-	httpmock.ActivateNonDefault(client.GetClient())
+	httpmock.ActivateNonDefault(clientMock.GetClient())
 
 	return func(tb testing.TB) {
 		log.Println("Teardown suite test")
@@ -35,7 +37,7 @@ func Test_exampleClientImp_GetName(t *testing.T) {
 		name           string
 		fields         fields
 		args           args
-		want           *ExampleResponse
+		want           *client.ExampleResponse
 		wantErr        bool
 		wantErrMessage string
 	}{
@@ -47,7 +49,7 @@ func Test_exampleClientImp_GetName(t *testing.T) {
 					httpmock.Reset()
 
 					fakeUrl := "https://example.com/example"
-					fixture := &ExampleResponse{Name: "name ja"}
+					fixture := &client.ExampleResponse{Name: "name ja"}
 					mockResponder, err := httpmock.NewJsonResponder(200, fixture)
 					if err != nil {
 						t.Fatalf("fixture is invalid")
@@ -55,13 +57,13 @@ func Test_exampleClientImp_GetName(t *testing.T) {
 
 					httpmock.RegisterResponder("POST", fakeUrl, mockResponder)
 
-					return client
+					return clientMock
 				},
 			},
 			args: args{
 				id: "1",
 			},
-			want:    &ExampleResponse{Name: "name ja"},
+			want:    &client.ExampleResponse{Name: "name ja"},
 			wantErr: false,
 		},
 		{
@@ -79,7 +81,7 @@ func Test_exampleClientImp_GetName(t *testing.T) {
 
 					httpmock.RegisterResponder("POST", fakeUrl, mockResponder)
 
-					return client
+					return clientMock
 				},
 			},
 			args: args{
@@ -104,7 +106,7 @@ func Test_exampleClientImp_GetName(t *testing.T) {
 
 					httpmock.RegisterResponder("POST", fakeUrl, mockResponder)
 
-					return client
+					return clientMock
 				},
 			},
 			args: args{
@@ -117,7 +119,7 @@ func Test_exampleClientImp_GetName(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := &ExampleClientImp{
+			c := &client.ExampleClientImp{
 				Client: tt.fields.Client(),
 			}
 			got, err := c.GetName(tt.args.id)
